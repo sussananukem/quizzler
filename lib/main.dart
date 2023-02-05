@@ -1,9 +1,8 @@
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'quiz_brain.dart';
-
-QuizBrain quizBrain = QuizBrain();
 
 void main() {
   runApp(
@@ -39,7 +38,45 @@ class QuizzlerHome extends StatefulWidget {
 }
 
 class _QuizzlerHomeState extends State<QuizzlerHome> {
+  QuizBrain quizBrain = QuizBrain();
   List<Widget> myIcons = [];
+
+  void checkAnswer(bool userAnswer) {
+    bool correctAnswer = quizBrain.getAnswer();
+    setState(() {
+      if (quizBrain.isFinished() == false) {
+        if (userAnswer == correctAnswer) {
+          myIcons.add(
+            const Expanded(
+              child: Icon(
+                Icons.check_circle,
+                color: Colors.green,
+              ),
+            ),
+          );
+        } else {
+          myIcons.add(
+            const Expanded(
+              child: Icon(
+                Icons.cancel,
+                color: Colors.red,
+              ),
+            ),
+          );
+        }
+        quizBrain.nextQuestion();
+      } else {
+        Alert(
+          context: context,
+          title: "Finished!",
+          desc: "You've reached the end of the quiz.",
+        ).show();
+
+        quizBrain.resetQuestion();
+        myIcons.clear();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,32 +112,14 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                 ),
               ),
 
-              //Buttons
+              //True Button
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
                   child: TextButton(
                     style: TextButton.styleFrom(backgroundColor: Colors.green),
                     onPressed: () {
-                      bool correctAnswer = quizBrain.getAnswer();
-                      setState(() {
-                        if (correctAnswer == true) {
-                          myIcons.add(
-                            const Icon(
-                              Icons.check,
-                              color: Colors.green,
-                            ),
-                          );
-                        } else {
-                          myIcons.add(
-                            const Icon(
-                              Icons.cancel,
-                              color: Colors.red,
-                            ),
-                          );
-                        }
-                        quizBrain.nextQuestion();
-                      });
+                      checkAnswer(true);
                     },
                     child: const Text(
                       'True',
@@ -112,6 +131,8 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                   ),
                 ),
               ),
+
+              //False Button
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(15.0),
@@ -120,25 +141,7 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                       backgroundColor: Colors.red,
                     ),
                     onPressed: () {
-                      bool correctAnswer = quizBrain.getAnswer();
-                      setState(() {
-                        if (correctAnswer == false) {
-                          myIcons.add(
-                            const Icon(
-                              Icons.check,
-                              color: Colors.green,
-                            ),
-                          );
-                        } else {
-                          myIcons.add(
-                            const Icon(
-                              Icons.cancel,
-                              color: Colors.red,
-                            ),
-                          );
-                        }
-                        quizBrain.nextQuestion();
-                      });
+                      checkAnswer(false);
                     },
                     child: const Text(
                       'False',
@@ -150,8 +153,11 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                   ),
                 ),
               ),
-              Row(
-                children: myIcons,
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Row(
+                  children: myIcons,
+                ),
               )
             ],
           ),
