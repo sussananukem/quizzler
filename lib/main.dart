@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'quiz_brain.dart';
 
-
 QuizBrain quizBrain = QuizBrain();
 
 void main() {
@@ -40,10 +39,7 @@ class QuizzlerHome extends StatefulWidget {
 }
 
 class _QuizzlerHomeState extends State<QuizzlerHome> {
-
   List<Widget> myIcons = [];
-
-  int questionNumber = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +64,7 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                   padding: const EdgeInsets.all(10.0),
                   child: Center(
                     child: Text(
-                      quizBrain.questionBank[questionNumber].question,
+                      quizBrain.getQuestion(),
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         color: Colors.white,
@@ -86,7 +82,7 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                   child: TextButton(
                     style: TextButton.styleFrom(backgroundColor: Colors.green),
                     onPressed: () {
-                      bool correctAnswer = quizBrain.questionBank[questionNumber].answer;
+                      bool correctAnswer = quizBrain.getAnswer();
                       setState(() {
                         if (correctAnswer == true) {
                           myIcons.add(
@@ -103,7 +99,7 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                             ),
                           );
                         }
-                        questionNumber++;
+                        quizBrain.nextQuestion();
                       });
                     },
                     child: const Text(
@@ -124,7 +120,7 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                       backgroundColor: Colors.red,
                     ),
                     onPressed: () {
-                      bool correctAnswer = quizBrain.questionBank[questionNumber].answer;
+                      bool correctAnswer = quizBrain.getAnswer();
                       setState(() {
                         if (correctAnswer == false) {
                           myIcons.add(
@@ -141,7 +137,7 @@ class _QuizzlerHomeState extends State<QuizzlerHome> {
                             ),
                           );
                         }
-                        questionNumber++;
+                        quizBrain.nextQuestion();
                       });
                     },
                     child: const Text(
