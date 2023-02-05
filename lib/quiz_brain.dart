@@ -1,5 +1,7 @@
 import 'package:quizzler/questions.dart';
 
+
+//This is where we get the full functionality of our Quiz app: Gets Questions, Gets Answers, Next Question, Reset Questions, Check if Question is finished
 class QuizBrain{
   int _questionNumber = 0;
   final List<Questions> _questionBank = [
@@ -29,7 +31,7 @@ class QuizBrain{
         'In West Virginia, USA, if you accidentally hit an animal with your car, you are free to take it home to eat.',
         true),
   ];
-
+//This method increases question number
   void nextQuestion(){
     if(_questionNumber < _questionBank.length - 1){
       _questionNumber++;
@@ -37,6 +39,7 @@ class QuizBrain{
 
   }
 
+  //This method checks if question is finished i.e @no. 12
   bool isFinished(){
     if(_questionNumber >= _questionBank.length - 1){
       return true;
@@ -45,17 +48,18 @@ class QuizBrain{
     }
   }
 
+  //This method resets the question number back to zero
   void resetQuestion(){
 
       _questionNumber = 0;
 
   }
 
-
+//This method returns the question at the question number index of the question bank
   String getQuestion(){
     return _questionBank[_questionNumber].question;
   }
-
+//This method returns the answer at the question number index of the question bank
   bool getAnswer(){
     return _questionBank[_questionNumber].answer;
   }

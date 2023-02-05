@@ -1,12 +1,11 @@
+//This is the class for our questions
+
 class Questions{
   //Properties
   late String question;
   late bool answer;
 
   //Constructor
-  Questions( String q,  bool a)
-  {
-    question = q;
-    answer = a;
-  }
+  Questions(this.question, this.answer);
+
 }
